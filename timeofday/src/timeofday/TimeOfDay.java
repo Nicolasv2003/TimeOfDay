@@ -8,17 +8,15 @@ package timeofday;
 public class TimeOfDay {
 	
 	/**
-	 * @invar | 0 <= hours && hours <= 23
-	 * @invar | 0 <= minutes && minutes <= 59
+	 * @invar | 0 <= minutesSinceMidnight && minutesSinceMidnight <= 60*24
 	 */
-	private int hours;
-	private int minutes;
+	private int minutesSinceMidnight;
 	
 	public int getHours() {
-		return hours;
+		return minutesSinceMidnight/60;
 	}
 	public int getMinutes() {
-		return minutes;
+		return minutesSinceMidnight%60;
 	}
 	
 	/**
@@ -33,8 +31,7 @@ public class TimeOfDay {
 			throw new IllegalArgumentException("'hours' out of range");
 		if (minutes < 0 || minutes > 59)
 			throw new IllegalArgumentException("'minutes' out of range");
-		this.hours = hours;
-		this.minutes= minutes;
+		this.minutesSinceMidnight = hours*60 + minutes;
 	}
 	
 	/**
@@ -43,17 +40,17 @@ public class TimeOfDay {
 	 * @post | getHours() == hours
 	 * @post | getMinutes() == old(getMinutes())
 	 */
-	public void setHours(int hours) {
-		this.hours = hours;
+	public void setHours(int hours) { 
+		this.minutesSinceMidnight = hours*60 + minutesSinceMidnight%60;
 	}
 	
 	/**
 	 * @pre | 0 <= minutes && minutes <= 59
 	 * @mutates | this
-	 * @post | getMinutes() == minutes
 	 * @post | getHours() == old(getHours())
+	 * @post | getMinutes() == minutes
 	 */
 	public void setMinutes(int minutes) {
-		this.minutes = minutes;
+		this.minutesSinceMidnight = minutes + (minutesSinceMidnight/60)*60;
 	}
 }
